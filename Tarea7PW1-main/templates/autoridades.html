@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Autoridades{% endblock %}
+{% block content %}
+<div class="tabla-auto">
+    <h4>Editar Firmas</h4>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre y Apellido</th>
+                <th>Cargo</th>
+                <th class="text-center">Editar</th>
+            </tr>
+        </thead>
+        <tbody id="tableAutoridades">
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="editarAutoridadModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+   <div class="modal-dialog">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Firmas</h1>
+           </div>
+           <div class="modal-body">
+               <form id="form-editar-autoridad">
+                   <input type="hidden" id="autoridad-id-editar">
+                   <div class="mb-3">
+                       <label for="inputAutoridadEdit" class="form-label">Nombre y Apellido</label>
+                       <input type="text" class="form-control" id="inputAutoridadEdit" required>
+                   </div>
+               </form>
+           </div>
+           <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                   Cerrar
+               </button>
+               <button type="button" class="btn btn-primary" id="btn-editarAutoridad">Editar</button>
+           </div>
+       </div>
+   </div>
+</div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header text-bg-danger">
+            <strong class="me-auto">Alerta</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            El campo no puede estar vacío.
+        </div>
+    </div>
+</div>
+{% endblock %}

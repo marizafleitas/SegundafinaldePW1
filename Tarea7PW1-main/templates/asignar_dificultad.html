@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #f4f4f9; /* Color de fondo de la página */
+            font-family: Arial, sans-serif; /* Fuente de la página */
+        }
+
+        .form-centrado {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto;
+            width: 80%; /* Ajusta el ancho del formulario */
+            max-width: 500px; /* Ancho máximo del formulario */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; /* Color de fondo del formulario */
+            margin-top: 100px; /* Espacio superior para el formulario */
+        }
+        
+        .form-centrado label {
+            font-size: 18px;
+            color: #333; /* Color del texto de las etiquetas */
+            margin-bottom: 8px; /* Espaciado entre etiqueta y select */
+        }
+        
+        .form-centrado select {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 20px; /* Espaciado entre los selects */
+            background-color: #f9f9f9; /* Color de fondo del select */
+        }
+        
+        .form-centrado button {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #007bff; /* Color de fondo del botón */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Efecto de transición para el hover */
+        }
+        
+        .form-centrado button:hover {
+            background-color: #0056b3; /* Color de fondo del botón al pasar el cursor */
+        }
+    </style>
+</head>
+<body>
+    <form class="form-centrado" aria-label=".form-select-lg example" method="POST">
+        {% csrf_token %}
+        
+        <label for="materia">Seleccionar Materia:</label>
+        <select name="materia" id="materia">
+            {% for materia in materias %}
+                <option value="{{ materia }}">{{ materia }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="dificultad">Asignar Dificultad:</label>
+        <select name="dificultad" id="dificultad">
+            <option value="Fácil">Fácil</option>
+            <option value="Intermedia">Intermedia</option>
+            <option value="Difícil">Difícil</option>
+        </select>
+        
+        <button type="submit">Asignar Dificultad</button>
+    </form>
+</body>
+</html>
+
+{% endblock %}

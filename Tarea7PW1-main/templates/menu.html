@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-cuadrado" aria-label=".form-select-lg example" id="filtroForm"  method="GET" action="{% url 'pdf_to_html' %}">
+        <br>
+        <h2 style="text-align: center" >Programas de Estudio</h2>
+        <h3 style="text-align: center">Selecciona una Carrera</h3>
+        <br>
+        <select id="cboCarrera" name="idCarrera">
+            <option value="KTII">Ingeniería en Informática</option>
+            <option value="KTIC">Ingeniería Civil</option>
+            <option value="KTIL">Ingeniería en Electrónica</option>
+            <option value="KTIE">Ingeniería en Electricidad</option>
+        </select>
+            <!-- Se agrega select de didicultad******************-->
+        <select id="dificultad" name="dificultad" class="form-select">
+            <option value="">Selecciona la Dificultad</option>
+            <option value="Fácil">Fácil</option>
+            <option value="Intermedia">Intermedia</option>
+            <option value="Difícil">Difícil</option>
+        </select>
+
+        <br>
+            <div id="checkboxContainer"  >
+            </div> <!-- Contenedor para los checkboxes -->
+        <br>
+        <hr>
+        <div class="boton-seleccionar">
+            <button type="submit" class="btn-form" id="filtrarBtn">Seleccionar</button>
+        </div>
+    </form>
+    
+    
+<script>
+       //script para dificultad *********************************
+document.getElementById('dificultad').addEventListener('change', function() {
+    const carreraId = document.getElementById('cboCarrera').value;
+    const dificultad = this.value;
+    listarMaterias(carreraId, dificultad);
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const buttonContainer = document.querySelector('.boton-seleccionar');
+
+    document.addEventListener('mousemove', function(event) {
+        const windowHeight = window.innerHeight;
+        const mouseY = event.clientY;
+
+        // Verificar si el mouse está en el último 20% de la pantalla
+        if (mouseY > windowHeight * 0.85) {
+            buttonContainer.classList.add('show-button');
+        } else {
+             buttonContainer.classList.remove('show-button');
+        }
+    });
+});
+      let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+        navbar.classList.add('navbar-hidden');
+        } else {
+        navbar.classList.remove('navbar-hidden');
+        }
+        lastScrollTop = scrollTop;
+    });
+    function toggleCheckboxes(masterCheckbox, curso, semestre) {
+        // Selecciona todos los fieldsets dentro de div-curso
+        const fieldsetCurso = document.querySelectorAll('#div-curso')
+
+        fieldsetCurso.forEach((fieldsetCur) => {
+            const legendCurso = fieldsetCur.querySelector('legend');
+            //console.log(legendCurso)
+            const fieldsetSemestre = fieldsetCur.querySelectorAll('#div-semestre fieldset');
+            fieldsetSemestre.forEach((fieldset) => {
+                // Encuentra el legend dentro del fieldset y verifica si contiene el texto del semestre
+                const legend = fieldset.querySelector('legend');
+                if (legend && legend.textContent.includes(semestre) && legendCurso.textContent.includes(curso)) {
+                    // Selecciona todos los checkboxes dentro del fieldset y ajusta su estado
+                    const checkboxes = fieldset.querySelectorAll('.form-check-input');
+                    checkboxes.forEach((checkbox) => {
+                        checkbox.checked = masterCheckbox.checked;
+                    });
+                }
+            });
+        })
+    }   
+</script>
+
+{% endblock %}

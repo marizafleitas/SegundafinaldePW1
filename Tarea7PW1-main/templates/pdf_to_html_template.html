@@ -1,0 +1,386 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Programas PDF</title>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <style>
+      td {
+        width: 300px;
+      }
+    </style>
+  </head>
+
+  <body>
+   <!-- Contenedor de la hoja -->
+<div class="sheet-container">
+  <!-- Contenido -->
+  {% for identificacion_data in identificaciones %}
+  <div class="pdf" id="pdf{{ forloop.index }}">
+    <div class="head">
+      <img
+        style="width: 110px; height: 110px"
+        src="/static/img/Logo2.png"
+        alt=""
+      />
+      <p>
+        UNIVERSIDAD NACIONAL DE CAAGUAZU<br />
+        Con sede en Coronel Oviedo<br />
+        <b>FACULTAD DE CIENCIAS Y TECNOLOGÍAS</b><br />
+        <span class="spancarrera">
+          CARRERA DE {{ identificacion_data.identificacion.carrera }}
+        </span><br>
+        {% if identificacion_data.identificacion.carrera == "Ingeniería Civil" %}
+          PLAN CURRICULAR 2013
+        {% else %}
+          PLAN CURRICULAR 2010
+        {% endif %}
+        <br>
+        <b>PROGRAMA DE ESTUDIOS</b>
+      </p>
+      <img
+        style="width: 110px; height: 110px"
+        src="/static/img/Logo.png"
+        alt=""
+      />
+    </div>
+    <div class="head2">
+      <p>
+        <span class="left-span">Carrera de {{ identificacion_data.identificacion.carrera }}</span>
+        <span class="right-span">Facultad de Ciencias y Tecnologias – UNCA</span>
+      </p>
+    </div>
+   
+    <div class="content">
+      <!-- Contenido de la página 1 -->
+      <div class="page">
+        <h2>I. IDENTIFICACIÓN</h2>
+        <div class="identification-table">
+          <table>
+            <tr>
+              <td>A. Nombre de la Materia</td>
+              <td>:{{ identificacion_data.identificacion.materia }}</td>
+            </tr>
+            <tr>
+              <td>B. Código</td>
+              <td>:{{ identificacion_data.identificacion.codigo }}</td>
+            </tr>
+            <tr>
+              <td>C. Condición</td>
+              <td>:{{ identificacion_data.identificacion.condicion }}</td>
+            </tr>
+            <tr>
+              <td>D. Carrera</td>
+              <td>:{{ identificacion_data.identificacion.carrera }}</td>
+            </tr>
+            <tr>
+              <td>E. Curso</td>
+              <td>:{{ identificacion_data.identificacion.curso }}</td>
+            </tr>
+            <tr>
+              <td>F. Semestre</td>
+              <td>:{{ identificacion_data.identificacion.semestre }}</td>
+            </tr>
+            <tr>
+              <td>G. Requisitos</td>
+              <td>:{{ identificacion_data.identificacion.requisitos }}</td>
+            </tr>
+            <tr>
+              <td>H. Carga horaria semanal</td>
+              <td>:{{ identificacion_data.identificacion.cargaSemanal }}</td>
+            </tr>
+            <tr>
+              <td>I. Carga horaria semestral</td>
+              <td>:{{ identificacion_data.identificacion.cargaSemestral }}</td>
+            </tr>
+          </table>
+        </div>
+        {% for seccion_titulo, seccion_contenido in identificacion_data.secciones.items %}
+        <h2 class="titulo">{{ seccion_titulo }}</h2>
+        {% if seccion_titulo == "IV. CONTENIDO" %}
+        <span class="contenido">
+          {% for tema in seccion_contenido %}
+                  <span>{{ tema.tema }}</span><br>
+                      {% for subtema in tema.subtemas %}
+                          <span class="sub-tema">{{ subtema }}</span><br>
+                      {% endfor %}
+          {% endfor %}
+      </span>
+        {% else %}
+          {% if seccion_titulo == "VI. EVALUACIÓN" %}
+            <p class="evaluacion">
+              Art. 43.- El sistema de evaluación del aprendizaje de los estudiantes de la Facultad de Ciencias y Tecnologías de la Universidad Nacional de Caaguazú, consta de dos fases:<br>
+              <span class="puntoeva"> 1. Evaluación procesual sumatoria, con una carga del (60%) sesenta por ciento del puntaje total posible por semestre;</span><br>
+              <span class="puntoeva"> 2. Evaluación Final Global, con una carga del (40%) cuarenta por ciento del puntaje total posible en la final semestral. </span><br>
+              Art. 46.- La evaluación procesual sumatoria estará regida por los programas de estudio de cada materia y contará con diferentes estrategias de evaluación, que podrán ser: trabajos prácticos, de investigación, extensión universitaria, revisión bibliográfica, giras educativas, pasantías, pruebas parciales. <br>
+              Art. 51.- El sistema de evaluación de la FCyT consta de dos fases: La evaluación procesual sumatoria y la evaluación final global. La evaluación procesual sumatoria equivale al 60% y  la evaluación final global equivale al 40% del total acumulable de puntos. <br>
+              Art. 52.- Los criterios de evaluación durante el proceso podrán basarse en las siguientes actividades y se llevarán a cabo durante el periodo lectivo: <br>
+              <span class="puntoeva"> a) <b>Las pruebas parciales</b>, que deberán ser dos como mínimo según los criterios del profesor de cada materia. </span><br>
+              <span class="puntoeva"> b) <b>Las giras educativas, visitas técnicas, trabajo de campo</b>, que podrán ser reemplazados por evaluaciones parciales en caso de que no hayan sido factibles su realización.</span><br>
+              <span class="puntoeva"> c) <b>Las revisiones bibliográficas, con presentación escrita y defensa oral</b> de los mismos. </span><br>
+              <span class="puntoeva"> d) <b>Trabajos Prácticos con presentación oral y escrita</b> (práctica inherente a cada materia).</span>
+              <br>
+              La distribución de los puntos del proceso (60%) se hara conforme al siguiente cuadro: 
+              <br>
+              <table class="table-evaluacion">
+                <tr>
+                  <td>Eventos</td>
+                  <td>Carga porcentual</td>
+                </tr>
+                <tr>
+                  <td>Examenes Parciales</td>
+                  <td>Minimo 45%</td>
+                </tr>
+                <tr>
+                  <td>Laboratorios</td>
+                  <td>Aplicación de criterio del docente, como máximo 15%</td>
+                </tr>
+              </table>
+              <br>
+              <p>Art. 53.-  Para la habilitación al examen final global, el estudiante deberá lograr, como mínimo el 60% de los puntos acumulables en la evaluación procesual sumatoria. Cuando el estudiante reúna un mínimo del 40% de la evaluación procesual sumatoria, tendrá derecho hasta a dos exámenes de recuperación.</p>  
+            </p>
+          {% else %}
+            <p>{{ seccion_contenido|safe }}</p>
+
+          {% endif %}
+        {% endif %}
+        {% if forloop.last %}
+        <!-- Salto de página después del último ciclo -->
+        <div class="page-break">
+          <table class="tableFirmas">
+            <tr>
+              {% for nautoridades in autoridades %}
+              <td>{{ nautoridades.nombreApellido }}<br>{{ nautoridades.cargo }}</td>
+              {% endfor %}
+            </tr>
+          </table>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      function actualizarContadores() {
+        // Obtiene el número total de páginas visibles
+        const pages = document.querySelectorAll(".pagedjs_page");
+        const totalPages = pages.length;
+
+        // Verifica si la última página tiene el atributo 'data-break-after'
+        const lastPage = pages[totalPages - 1];
+        if (lastPage.hasAttribute('data-break-after')) {
+            const previousPage = lastPage.previousElementSibling;
+            console.log("Página anterior a la removida:", previousPage);
+            console.log("elemento despues del anterior",previousPage.nextElementSibling)
+            const piePagina = previousPage.querySelector('.pagedjs_margin-bottom');
+            piePagina.style.cssText = `
+              grid-template-columns: 6fr 1fr;
+            `;
+            if (piePagina) {
+            // Genera el contenido de la tabla usando las autoridades
+              const autoridades = [
+                {% for autoridad in autoridades %}
+                    { nombreApellido: "{{ autoridad.nombreApellido }}", cargo: "{{ autoridad.cargo }}" }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ];
+            
+            const tableHTML = `
+            <table class="tableFirmasPie">
+              <tr>
+                ${autoridades.map(nautoridad => `<td>${nautoridad.nombreApellido}<br>${nautoridad.cargo}</td>`).join('')}
+              </tr>
+            </table>`;
+            console.log(tableHTML)
+            console.log(piePagina)
+            const tableFirmasLast = lastPage.querySelector('.tableFirmas');
+            if (tableFirmasLast && !tableFirmasLast.parentElement.previousElementSibling) {
+                lastPage.remove();
+                piePagina.innerHTML = tableHTML;
+                const tableDelete = previousPage.querySelector('.tableFirmas');
+                if (tableDelete) {
+                  tableDelete.remove();
+                }
+            }
+
+          }
+            
+        }
+
+        // Inserta la tabla en el pie de página de la última página visible
+       
+
+        // Actualiza los estilos para el contador de páginas
+        const style = document.createElement('style');
+        style.textContent = `
+            .pagedjs_margin-bottom::after {
+                content: "Página " counter(page) " de ${totalPages}";
+                position: absolute;
+                color: #000;
+                font-size: 12px;
+                text-align: right;
+                width: 76%;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function manejarPaginas() {
+        const pagebox = document.querySelectorAll(".pagedjs_sheet");
+   
+        console.log("Número de elementos", pagebox.length);
+        const contador = pagebox.length - 1;
+        const pageboxes = pagebox[contador];
+
+        if (pageboxes) {
+            const lastPage = pageboxes.parentElement.previousElementSibling;
+            //console.log("pagina anterior en general:",lastPage);
+
+            if (lastPage && lastPage.hasAttribute('data-break-after')) {
+                const pageLastBreak = lastPage.previousElementSibling;
+                console.log("pagina del header",pageboxes);
+                console.log("pagina anterior", lastPage);
+                const headcenter = pageboxes.querySelector('.pagedjs_pagebox .pagedjs_margin-top');
+                const tableFirmas = lastPage.querySelector('.tableFirmas');
+                //console.log("Tabla de Firmas", tableFirmas);
+
+                if (tableFirmas && tableFirmas.parentElement.previousElementSibling == null) {
+                    lastPage.remove();
+                    console.log("pagina firma pie de pagina:", pageLastBreak);
+                    const piePagina = pageLastBreak.querySelector('.pagedjs_margin-bottom');
+                    piePagina.style.cssText = `
+                        grid-template-columns: 6fr 1fr;
+                    `;
+                    const autoridades = [
+                    {% for autoridad in autoridades %}
+                        { nombreApellido: "{{ autoridad.nombreApellido }}", cargo: "{{ autoridad.cargo }}" }{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                    ];
+            
+                    const tableHTML = `
+                      <table class="tableFirmasPie">
+                        <tr>
+                          ${autoridades.map(nautoridad => `<td>${nautoridad.nombreApellido}<br>${nautoridad.cargo}</td>`).join('')}
+                        </tr>
+                      </table>`;
+                      if (piePagina) {
+                        piePagina.innerHTML = tableHTML;
+                        const tableFirmasDelete = pageLastBreak.querySelector('.tableFirmas')
+                        if(tableFirmasDelete){
+                          tableFirmasDelete.remove();
+
+                        }
+                      }
+                  }
+
+                if (headcenter) {
+                    pageboxes.style.cssText = `
+                        --pagedjs-margin-top: 0mm;
+                        --pagedjs-border-top: none;
+                    `;
+                    headcenter.style.cssText = `
+                        color: red;
+                        display: none;
+                        width:0 !important;
+                        height:0 !important;
+                    `;
+                }
+                setTimeout(() => {
+                    actualizarContadores();
+                }, 17000); 
+            }
+        }
+    }
+
+    // Configura el observador de mutaciones
+    const observer = new MutationObserver((mutationsList, observer) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === "childList") {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.classList && node.classList.contains("pagedjs_page")) {
+                        manejarPaginas();
+                    }
+                });
+            }
+        }
+    });
+
+    const targetNode = document.body; 
+    const config = { childList: true, subtree: true };
+
+    // Inicia la observación
+    observer.observe(targetNode, config);
+});
+   
+        /*pagebox.forEach((head, index) => {
+            const pdfNumber = index + 1;
+            const header1 = head.parentElement.previousElementSibling
+              if(header1 && header1.hasAttribute('data-break-after')){
+                    //console.log(`PDF Number: ${pdfNumber}`);
+                    console.log(header1);
+                  }
+                //console.log(pdfNumber)
+              });*/
+     /* const pdfs = document.querySelectorAll(".pdf");
+      console.log(pdfs)
+      pdfs.forEach((pdf,index) => {
+        const pdfnro = index + 1;
+        console.log(pdfnro)
+
+            if (pdfnro == 1){
+              const hojas2 = pdf.querySelectorAll(".header2")
+              hojas2.forEach((hojas,index) => {
+                const numhojas = index + 1
+                console.log(numhojas) 
+              })       
+          }
+      });*/
+      /*let pdfs = document.querySelectorAll('.pdf');
+          if(pdfs){
+                    pdfs.style.cssText = `
+                    color: red;
+                `;
+                }
+      
+          pdfs.forEach((pdf,index) => {
+            const pdfNumber = index + 1;
+            
+            if(pdfNumber === 2){
+                let identi = document.querySelector('.identification-table')
+                if(identi){
+                    identi.style.cssText = `
+                    color: red;
+                `;
+                }
+            }
+            console.log(pdfNumber)
+          });*/
+
+      // Seleccionar todas las primeras páginas
+      //const pdfs = document.querySelectorAll('.pdf');
+
+      // Iterar sobre cada .pdf
+      /*pdfs.forEach((pdf, index) => {
+    const pdfNumber = index + 1;
+    console.log(pdfNumber)
+    // Aplicar estilos específicos si es necesario
+    if (index >= 1) { // Aplicar solo al segundo PDF
+        let header2 = pdf.querySelector('.header2');
+        if (header2) {
+            header2.style.cssText = `
+            border: 2px solid blue;
+            background-color: lightgrey;
+            padding: 10px;
+        `       
+        }
+
+    }
+});*/
+    </script>
+  </body>
+</html>
